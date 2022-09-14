@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-family: -apple-system, 'Open Sans'
+  font-family: 'Source Sans Pro'
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -18,4 +18,9 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
 }
