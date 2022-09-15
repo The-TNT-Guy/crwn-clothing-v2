@@ -7,12 +7,12 @@ export const ProductsContext = createContext({
 });
 
 export const ProductsProvider = ({ children }) => {
-  const [products, setProducts] = useState(PRODUCTS);
+  const [products, setProducts] = useState([]);
   const value = { products };
 
-//   useEffect(() => {
-//     setProducts(PRODUCTS);
-//   }, []);
+  useEffect(() => {
+    setProducts(PRODUCTS);
+  }, []);
 
   return (
     <ProductsContext.Provider value={value}>
