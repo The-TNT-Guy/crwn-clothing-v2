@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  createUserDocumentFromAuth,
   signInAuthUserWithEmailAndPassword,
   signInWithGooglePopup,
 } from "../../utils/firebase/firebase.utils";
@@ -25,11 +24,10 @@ const SignIn = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await signInAuthUserWithEmailAndPassword(
+      await signInAuthUserWithEmailAndPassword(
         email,
         password
       );
-      await createUserDocumentFromAuth(response.user);
       resetFormFields();
     } catch (error) {
       switch (error.code) {
@@ -47,8 +45,7 @@ const SignIn = () => {
 
   const signInWithGoogle = async () => {
     try {
-      const { user } = await signInWithGooglePopup();
-      createUserDocumentFromAuth(user);
+      signInWithGooglePopup();
     } catch (error) {
       switch (error.code) {
         case "auth/popup-closed-by-user":
