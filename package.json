@@ -12,10 +12,11 @@
     "react-router-dom": "^6.4.0",
     "react-scripts": "5.0.0",
     "sass": "^1.54.9",
+    "styled-components": "^5.3.5",
     "web-vitals": "2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "set PORT=3003 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
