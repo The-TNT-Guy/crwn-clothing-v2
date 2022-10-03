@@ -9,15 +9,16 @@ const CartDropdown = () => {
   const { cartItems, setIsCartOpen } = useContext(CartContext);
   const navigate = useNavigate();
   const navigateToCheckout = () => {
-    setIsCartOpen(false)
-    navigate("/checkout")
-  }
+    setIsCartOpen(false);
+    navigate("/checkout");
+  };
   return (
     <div className="cart-dropdown-container">
       <div className="cart-items">
         {cartItems.map((cardItem) => (
           <CartItem key={cardItem.id} cardItem={cardItem} />
         ))}
+        {cartItems.length === 0 && <p>No items in Cart</p>}
       </div>
       <Button onClick={navigateToCheckout}>GO TO CHECKOUT</Button>
     </div>
