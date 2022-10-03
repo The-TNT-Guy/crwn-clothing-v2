@@ -1,6 +1,5 @@
-import { createContext, useEffect, useReducer, useState } from "react";
+import { createContext, useReducer } from "react";
 import { createAction } from "../utils/reducer/reducer.utils";
-import { USER_ACTION_TYPES } from "./user.context";
 
 export const CartContext = createContext({
   cartItems: [],
