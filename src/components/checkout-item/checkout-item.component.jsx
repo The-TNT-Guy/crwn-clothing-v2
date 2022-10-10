@@ -6,7 +6,7 @@ const CheckoutItem = ({ cardItem }) => {
   const { name, imageUrl, quantity, price } = cardItem;
   const { addItemToCart, reduceItemFromCart, removeItemFromCart } =
     useContext(CartContext);
-    
+
   const addToCart = () => addItemToCart(cardItem);
   const reduceFromCart = () => reduceItemFromCart(cardItem);
   const removeFromCart = () => removeItemFromCart(cardItem);
