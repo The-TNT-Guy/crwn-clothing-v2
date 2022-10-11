@@ -24,7 +24,7 @@ const reduceCartItem = (cartItems, itemToReduce) => {
 };
 
 const removeCartItem = (cartItems, itemToRemove) => {
-  cartItems.filter((item) => item.id !== itemToRemove.id);
+  return cartItems.filter((item) => item.id !== itemToRemove.id);
 };
 
 export const setIsCartOpen = (boolean) =>
