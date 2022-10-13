@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { AuthError, AuthErrorCodes } from "firebase/auth";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   signInAuthUserWithEmailAndPassword,
   signInWithGooglePopup,
 } from "../../utils/firebase/firebase.utils";
-import Button from "../button/button.component";
+import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
 import FormInput from "../form-input/form-input.component";
 import "./sign-in.styles.scss";
 
@@ -18,30 +19,27 @@ const SignIn = () => {
   const { email, password } = formFields;
   const navigate = useNavigate();
 
-  const handleChange = (event) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormFields({ ...formFields, [name]: value });
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      await signInAuthUserWithEmailAndPassword(
-        email,
-        password
-      );
+      await signInAuthUserWithEmailAndPassword(email, password);
       resetFormFields();
-      navigate("/")
+      navigate("/");
     } catch (error) {
-      switch (error.code) {
-        case "auth/wrong-password":
+      switch ((error as AuthError).code) {
+        case AuthErrorCodes.INVALID_PASSWORD:
           alert(`Incorrect password for email: ${email}!`);
           break;
-        case "auth/user-not-found":
+        case AuthErrorCodes.USER_DELETED:
           alert("No account with this email found!");
           break;
         default:
-          console.log("Failed signing-in user!", error.message);
+          console.log("Failed signing-in user!", error);
       }
     }
   };
@@ -49,14 +47,14 @@ const SignIn = () => {
   const signInWithGoogle = async () => {
     try {
       await signInWithGooglePopup();
-      navigate.push("/")
+      navigate("/");
     } catch (error) {
-      switch (error.code) {
-        case "auth/popup-closed-by-user":
+      switch ((error as AuthError).code) {
+        case AuthErrorCodes.POPUP_CLOSED_BY_USER:
           alert(`Google Sign-in was aborted!`);
           break;
         default:
-          console.log("Failed signing-in user!", error.message);
+          console.log("Failed signing-in user!", error);
       }
     }
   };
@@ -87,7 +85,11 @@ const SignIn = () => {
         />
         <div className="row">
           <Button type="submit">Sign In</Button>
-          <Button type="button" buttonType="google" onClick={signInWithGoogle}>
+          <Button
+            type="button"
+            buttonType={BUTTON_TYPE_CLASSES.google}
+            onClick={signInWithGoogle}
+          >
             Continue with Google
           </Button>
         </div>

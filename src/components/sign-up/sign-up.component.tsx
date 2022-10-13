@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { AuthError, AuthErrorCodes } from "firebase/auth";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   createAuthUserWithEmailAndPassword,
@@ -20,29 +21,31 @@ const SignUp = () => {
   const { displayName, email, password, confirmPassword } = formFields;
   const navigate = useNavigate();
 
-  const handleChange = (event) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormFields({ ...formFields, [name]: value });
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (password !== confirmPassword) {
       alert("The Passwords do not match!");
       return;
     }
     try {
-      const { user } = await createAuthUserWithEmailAndPassword(
+      const userAuth = await createAuthUserWithEmailAndPassword(
         email,
         password
       );
-      await createUserDocumentFromAuth(user, { displayName });
+      if (userAuth?.user) {
+        await createUserDocumentFromAuth(userAuth.user, { displayName });
+      }
       resetFormFields();
       navigate("/");
     } catch (error) {
-      if (error.code === "auth/email-already-in-use") {
+      if ((error as AuthError).code === AuthErrorCodes.EMAIL_EXISTS) {
         alert("Cannot create user, email already in use!");
-      } else console.log("Failed creating user!", error.message);
+      } else console.log("Failed creating user!", error);
     }
   };
 
